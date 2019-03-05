@@ -3,7 +3,8 @@ import {app} from "../src/app";
 import {modelClass} from "../src/models/classModel";
 import mongoose from "mongoose";
 
-const classOneId = new mongoose.Types.ObjectId()
+const fakeId= new mongoose.Types.ObjectId();
+const classOneId = new mongoose.Types.ObjectId();
 const classOne = {
         _id: classOneId,
         ClassName : 'batch1New',
@@ -38,10 +39,64 @@ test("Get All classes", async ()=>{
         expect(res.body.length).toBe(1);
     })
 });
-test("Get One classes By Id", async ()=>{
+test("Get classes By Id", async ()=>{
     await request(app)
-    .get('/class/id')
+    .get(`/class/${classOneId}`)
+    .send()
     .expect(200)
-    const findClass= await modelClass.findById(classOneId)
-    expect(findClass).toBe(1);
+
+});
+test("Should not Get classes By Wrong ObjectId", async ()=>{
+    await request(app)
+    .get(`/class/${fakeId}`)
+    .send()
+    .expect(400)
+});
+test("Should not Get classes By Invalid Id", async ()=>{
+    await request(app)
+    .get(`/class/12345567777`)
+    .send()
+    .expect(500)
+});
+test("Delete classes By Id", async ()=>{
+    await request(app)
+    .delete(`/class/${classOneId}`)
+    .send()
+    .expect(200)
+});
+test("Should not Delete class By Wrong ObjectId", async ()=>{
+    await request(app)
+    .delete(`/class/${fakeId}`)
+    .send()
+    .expect(400)
+});
+test("Should not Delete class By Invalid Id", async ()=>{
+    await request(app)
+    .delete(`/class/12345567777`)
+    .send()
+    .expect(500)
+});
+test("Update classes By Id", async ()=>{
+    await request(app)
+    .patch(`/class/${classOneId}`)
+    .send({
+        ClassName : 'UpdatedBatch1New',
+        CapacityOfStudent:26
+    })
+    .expect(200)
+});
+test("Should not Update class By Wrong ObjectId", async ()=>{
+    await request(app)
+    .patch(`/class/${fakeId}`)
+    .send({
+        ClassName : 'UpdatedBatch1New',
+        CapacityOfStudent:26
+    })
+    .expect(404)
+});
+test("Should not Update class By Invalid Id", async ()=>{
+    await request(app)
+    .patch(`/class/abcd12345`)
+    .send()
+    .expect(400)
 });

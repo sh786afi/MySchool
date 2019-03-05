@@ -44,7 +44,7 @@ export const getClass = async(req,res)=>{
   try{
     const deleteClassById=await modelClass.findByIdAndRemove(_id);
     if(!deleteClassById){
-      return res.status(400).send()
+      return res.status(400).send() 
     }
     res.send(deleteClassById);
   }catch(e){
