@@ -1,8 +1,8 @@
-import {studentModel} from "../models/studentModel";
+import {schemaStudent} from "../Schema/student.schema";
 import {ObjctId} from "mongoose"
 export const addStudent=async(req,res)=>{
     const _id = req.params.id;
-    const createStudent =  new studentModel(req.body);
+    const createStudent =  new schemaStudent(req.body);
     //console.log('abcccc',req.body);
     try{
       console.log(createStudent);
@@ -16,7 +16,7 @@ export const addStudent=async(req,res)=>{
 //Get all Subject api
 export const getStudent = async(req,res)=>{
     try{
-      const allStudents=await studentModel.find({});
+      const allStudents=await schemaStudent.find({});
       res.send(allStudents);
     }catch(e){
       //console.log(allStudents);
@@ -27,7 +27,7 @@ export const getStudent = async(req,res)=>{
   export const getStudentbyId = async(req,res)=>{
     const _id = req.params.id;
     try{
-      const StudentById=await studentModel.findById(_id);
+      const StudentById=await schemaStudent.findById(_id);
       if(!StudentById){
         return res.status(400).send()
       }
@@ -40,7 +40,7 @@ export const getStudent = async(req,res)=>{
  export const deleteStudentbyId = async(req,res)=>{
   const _id = req.params.id;
   try{
-    const deleteStudentById=await studentModel.findByIdAndRemove(_id);
+    const deleteStudentById=await schemaStudent.findByIdAndRemove(_id);
     if(!deleteStudentById){
       return res.status(400).send()
     }
@@ -53,7 +53,7 @@ export const getStudent = async(req,res)=>{
 export const updateStudentbyId = async(req,res)=>{
   const _id = req.params.id;
   try{
-    const updateStudentById=await studentModel.findByIdAndUpdate(_id,req.body,{new:true});
+    const updateStudentById=await schemaStudent.findByIdAndUpdate(_id,req.body,{new:true});
     if(!updateStudentById){
       return res.status(404).send()
     }

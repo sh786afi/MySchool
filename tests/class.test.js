@@ -1,6 +1,6 @@
 import request from "supertest";
 import {app} from "../src/app";
-import {modelClass} from "../src/models/classModel";
+import {schemaClass} from "../src/Schema/class.schema";
 import mongoose from "mongoose";
 
 const fakeId= new mongoose.Types.ObjectId();
@@ -12,8 +12,8 @@ const classOne = {
 }
 
 beforeEach(async ()=>{
-    await modelClass.deleteMany();
-    const createClass=new modelClass(classOne);
+    await schemaClass.deleteMany();
+    const createClass=new schemaClass(classOne);
     await createClass.save();
 })
 test("Should create a class", async ()=>{

@@ -1,8 +1,8 @@
-import {subjectModel} from "../models/subjectModel";
+import {schemaSubject} from "../Schema/subject.schema";
 import {ObjctId} from "mongoose"
 export const addSubject=async(req,res)=>{
     const _id = req.params.id;
-    const createSubject =  new subjectModel(req.body);
+    const createSubject =  new schemaSubject(req.body);
     //console.log('abcccc',req.body);
     try{
       console.log(createSubject);
@@ -16,7 +16,7 @@ export const addSubject=async(req,res)=>{
 //Get all Subject api
 export const getSubject = async(req,res)=>{
     try{
-      const allSubjects=await subjectModel.find({});
+      const allSubjects=await schemaSubject.find({});
       res.send(allSubjects);
     }catch(e){
       //console.log(modelClass);
@@ -27,7 +27,7 @@ export const getSubject = async(req,res)=>{
   export const getSubjectbyId = async(req,res)=>{
     const _id = req.params.id;
     try{
-      const SubjectById=await subjectModel.findById(_id);
+      const SubjectById=await schemaSubject.findById(_id);
       if(!SubjectById){
         return res.status(400).send()
       }
@@ -40,7 +40,7 @@ export const getSubject = async(req,res)=>{
  export const deleteSubjectbyId = async(req,res)=>{
   const _id = req.params.id;
   try{
-    const deleteSubjectById=await subjectModel.findByIdAndRemove(_id);
+    const deleteSubjectById=await schemaSubject.findByIdAndRemove(_id);
     if(!deleteSubjectById){
       return res.status(400).send()
     }
@@ -53,7 +53,7 @@ export const getSubject = async(req,res)=>{
 export const updateSubjectbyId = async(req,res)=>{
   const _id = req.params.id;
   try{
-    const updateSubjectById=await subjectModel.findByIdAndUpdate(_id,req.body,{new:true});
+    const updateSubjectById=await schemaSubject.findByIdAndUpdate(_id,req.body,{new:true});
     if(!updateSubjectById){
       return res.status(404).send()
     }
@@ -68,7 +68,7 @@ export const getAllSubjectInClass = async(req,res)=>{
     const classId = req.params.classId;
     console.log('iddddd',classId);
     try{
-      const SubjectByClassId=await subjectModel.findOne({classId:classId});
+      const SubjectByClassId=await schemaSubject.findOne({classId:classId});
       console.log('subbiddddd',SubjectByClassId);
       if(!SubjectByClassId){
         return res.status(400).send()
