@@ -1,4 +1,5 @@
-import {schemaSubject} from "../Schema/subject.schema";
+import {schemaSubject} from "../schema/subject.schema";
+import {schemaClass} from "../schema/class.schema";
 import {ObjctId} from "mongoose"
 export const addSubject=async(req,res)=>{
     const _id = req.params.id;
@@ -6,6 +7,10 @@ export const addSubject=async(req,res)=>{
     //console.log('abcccc',req.body);
     try{
       console.log(createSubject);
+      const findClass = await schemaClass.findById(req.body.classId);
+      if(!findClass){        
+        res.status(404).send({errorMessage: "class not found"});
+      }
       await createSubject.save();
       res.status(200).send({createSubject});
     }catch(e){

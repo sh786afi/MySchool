@@ -1,4 +1,5 @@
-import {schemaStudent} from "../Schema/student.schema";
+import {schemaStudent} from "../schema/student.schema";
+import {schemaClass} from "../schema/class.schema";
 import {ObjctId} from "mongoose"
 export const addStudent=async(req,res)=>{
     const _id = req.params.id;
@@ -6,6 +7,10 @@ export const addStudent=async(req,res)=>{
     //console.log('abcccc',req.body);
     try{
       console.log(createStudent);
+      const findClass = await schemaClass.findById(req.body.classId);
+      if(!findClass){        
+        res.status(404).send({errorMessage: "class not found"})
+      }
       await createStudent.save();
       res.status(200).send({createStudent});
     }catch(e){
@@ -53,7 +58,7 @@ export const getStudent = async(req,res)=>{
 export const updateStudentbyId = async(req,res)=>{
   const _id = req.params.id;
   try{
-    const updateStudentById=await schemaStudent.findByIdAndUpdate(_id,req.body,{new:true});
+    const updateStudentById=await schemaStudent.findByIdAndUpdate(_id,req.body,{new:true, runValidators: true});
     if(!updateStudentById){
       return res.status(404).send()
     }

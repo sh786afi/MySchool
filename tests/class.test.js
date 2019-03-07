@@ -1,6 +1,6 @@
 import request from "supertest";
 import {app} from "../src/app";
-import {schemaClass} from "../src/Schema/class.schema";
+import {schemaClass} from "../src/schema/class.schema";
 import mongoose from "mongoose";
 
 const fakeId= new mongoose.Types.ObjectId();
