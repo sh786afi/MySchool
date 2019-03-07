@@ -6,6 +6,15 @@ import {addStudent,getStudent,getStudentbyId,deleteStudentbyId,updateStudentbyId
 export default function createRouter() {
     const router =  express.Router();
 
+    //Students
+    router.post("/student/signup", addStudent);
+    router.get("/student", getStudent);
+    router.get("/student/:id", getStudentbyId);
+    router.delete("/student/:id", deleteStudentbyId);
+    router.patch("/student/update/:id", updateStudentbyId);
+    router.get("/student/class/:id", getAllSubjectOfStudent);
+
+    //Class
     router.post("/class", addClass);
     router.get("/class", getClass);
     router.get("/class/:id", getClassbyId);
@@ -20,13 +29,7 @@ export default function createRouter() {
     router.patch("/subject/:id", updateSubjectbyId);
     router.get("/subject/class/:id", getAllSubjectInClass);
 
-    //Students
-    router.post("/student", addStudent);
-    router.get("/student", getStudent);
-    router.get("/student/:id", getStudentbyId);
-    router.delete("/student/:id", deleteStudentbyId);
-    router.patch("/student/:id", updateStudentbyId);
-    router.get("/student/class/:id", getAllSubjectOfStudent);
+    
 
     return router;
     

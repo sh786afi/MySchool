@@ -1,4 +1,4 @@
-import {schemaClass} from "../Schema/class.schema";
+import {schemaClass} from "../schema/class.schema";
 import {bodyParser} from "body-parser";
 import { userInfo } from "os";
 import {express} from "express";
