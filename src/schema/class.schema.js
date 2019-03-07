@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-var schemaClass=mongoose.model('ClassRoom',new mongoose.Schema({
+
+const Class =new mongoose.Schema({
     ClassName: {
         type: String,
         required: true,
@@ -11,6 +12,7 @@ var schemaClass=mongoose.model('ClassRoom',new mongoose.Schema({
         required: true
         
     }
-}));
+})
+const schemaClass=mongoose.model('ClassRoom',Class);
 
 module.exports = {schemaClass};
