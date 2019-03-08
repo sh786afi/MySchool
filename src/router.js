@@ -12,7 +12,7 @@ export default function createRouter() {
     router.get("/student/:id", getStudentbyId);
     router.delete("/student/:id", deleteStudentbyId);
     router.patch("/student/update/:id", updateStudentbyId);
-    router.get("/student/class/:id", getAllSubjectOfStudent);
+    router.get("/student/class/:classId", getAllSubjectOfStudent);
 
     //Class
     router.post("/class", addClass);
@@ -27,7 +27,7 @@ export default function createRouter() {
     router.get("/subject/:id", getSubjectbyId);
     router.delete("/subject/:id", deleteSubjectbyId);
     router.patch("/subject/:id", updateSubjectbyId);
-    router.get("/subject/class/:id", getAllSubjectInClass);
+    router.get("/subject/class/:classId", getAllSubjectInClass);
 
     
 

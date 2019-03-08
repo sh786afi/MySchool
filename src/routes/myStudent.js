@@ -1,10 +1,10 @@
 import {schemaStudent} from "../schema/student.schema";
 import {schemaClass} from "../schema/class.schema";
-import {ObjctId} from "mongoose"
+import mongoose from "mongoose";
+var ObjectId=mongoose.Types.ObjectId;
 export const addStudent=async(req,res)=>{
     const _id = req.params.id;
     const createStudent =  new schemaStudent(req.body);
-    //console.log('abcccc',req.body);
     try{
       console.log(createStudent);
       const findClass = await schemaClass.findById(req.body.classId);
@@ -66,7 +66,6 @@ export const updateStudentbyId = async(req,res)=>{
     //const updateStudent=await schemaStudent.findByIdAndUpdate(_id,req.body,{new:true, runValidators: true});
     const updateStudent =await schemaStudent.findById(req.params.id);
     update.forEach((update) =>updateStudent[update]=req.body[update]);
-    await updateStudent.save();
     const findClass = await schemaClass.findById(req.body.classId);
     if(!updateStudent){
       return res.status(404).send()
@@ -74,24 +73,25 @@ export const updateStudentbyId = async(req,res)=>{
     else if(!findClass){
       return res.status(404).send({errorMessage: "class not found"})
     }
+    await updateStudent.save();
     res.send(updateStudent);
   }catch(e){
-    //console.log(modelClass);
     res.status(400).send(e);
   }
 }; 
 //pending
 export const getAllSubjectOfStudent = async(req,res)=>{
-    const classId = req.params.classId;
-    console.log('iddddd',classId);
     try{
-      const SubjectByClassId=await subjectModel.findOne({classId:classId});
-      console.log('subbiddddd',SubjectByClassId);
-      if(!SubjectByClassId){
+      const classId=req.params.classId;
+       const StudentByClassId=await schemaStudent.find({'classId':classId});
+      console.log('subbiddddd',StudentByClassId);
+      if(!StudentByClassId){
         return res.status(400).send()
       }
-      res.send(SubjectByClassId);
+      res.send(StudentByClassId);
     }catch(e){
+      console.log(e);
+      
       //console.log(modelClass);
       res.status(500).send(e);
     }
