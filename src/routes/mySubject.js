@@ -70,19 +70,20 @@ export const updateSubjectbyId = async(req,res)=>{
     res.status(400).send(e);
   }
 }; 
-// pendßing
+// pending
 export const getAllSubjectInClass = async(req,res)=>{
-    const classId = req.params.classId;
-    console.log('iddddd',classId);
-    try{
-      const SubjectByClassId=await schemaSubject.findOne({classId:classId});
-      console.log('subbiddddd',SubjectByClassId);
-      if(!SubjectByClassId){
-        return res.status(400).send()
-      }
-      res.send(SubjectByClassId);
-    }catch(e){
-      //console.log(modelClass);
-      res.status(500).send(e);
+  try{
+    const classId=req.params.classId;
+     const SubjectByClassId=await schemaSubject.find({'classId':classId});
+    console.log('subbiddddd',SubjectByClassId);
+    if(!SubjectByClassId){
+      return res.status(400).send()
     }
+    res.send(SubjectByClassId);
+  }catch(e){
+    console.log(e);
+    
+    //console.log(modelClass);
+    res.status(500).send(e);
+  }
  }; 

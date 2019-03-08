@@ -8,7 +8,7 @@ const Subject=new Schema({
         minlength: 1,
         trim: true
     },
-    classId:  { type: Schema.Types.ObjectId, ref: 'schemaClass' }
+    classId:  { type: mongoose.Types.ObjectId, ref: 'schemaClass' }
 })
 const schemaSubject=mongoose.model('SUBJECT',Subject);
 module.exports ={schemaSubject};
