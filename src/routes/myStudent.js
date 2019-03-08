@@ -56,13 +56,25 @@ export const getStudent = async(req,res)=>{
   }
 }; 
 export const updateStudentbyId = async(req,res)=>{
-  const _id = req.params.id;
+  const update=Object.keys(req.body);
+  const allowedUpdates=['name','email','password','age','classId']
+  const isValidOperation=update.entries((update)=>allowedUpdates.includes(update))
+  if(!isValidOperation){
+    return res.status.send({error:'Invalid Updates'})
+  }
   try{
-    const updateStudentById=await schemaStudent.findByIdAndUpdate(_id,req.body,{new:true, runValidators: true});
-    if(!updateStudentById){
+    //const updateStudent=await schemaStudent.findByIdAndUpdate(_id,req.body,{new:true, runValidators: true});
+    const updateStudent =await schemaStudent.findById(req.params.id);
+    update.forEach((update) =>updateStudent[update]=req.body[update]);
+    await updateStudent.save();
+    const findClass = await schemaClass.findById(req.body.classId);
+    if(!updateStudent){
       return res.status(404).send()
     }
-    res.send(updateStudentById);
+    else if(!findClass){
+      return res.status(404).send({errorMessage: "class not found"})
+    }
+    res.send(updateStudent);
   }catch(e){
     //console.log(modelClass);
     res.status(400).send(e);

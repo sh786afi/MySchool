@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 import validator from "validator";
+import bcrypt from "bcrypt";
 import {schemaClass} from "./class.schema";
-var Schema = mongoose.Schema;
-var schemaStudent=mongoose.model('STUDENT',new Schema({
+const Schema = mongoose.Schema;
+const Student=new Schema({
     name: {
         type: String,
         required: true,
@@ -40,5 +41,18 @@ var schemaStudent=mongoose.model('STUDENT',new Schema({
         }
     },
     classId:  { type: Schema.Types.ObjectId, ref: 'schemaClass' }
-}));
+})
+console.log('outttttttt');
+Student.pre('save', async function (next){
+    console.log('innnnnnnnn');
+    const updateStudent =this
+    console.log('updateeeee var',updateStudent);
+    console.log('issssss',updateStudent.isModified('password'))
+    if(updateStudent.isModified('password')){
+        console.log('modifiyyyy',isModified);
+        updateStudent.password=await bcrypt.hash(user.password,8)
+    }
+    next()
+})
+const schemaStudent=mongoose.model('STUDENT',Student);
 module.exports ={schemaStudent};

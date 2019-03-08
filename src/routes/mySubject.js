@@ -58,9 +58,11 @@ export const getSubject = async(req,res)=>{
 export const updateSubjectbyId = async(req,res)=>{
   const _id = req.params.id;
   try{
+    const findClass = await schemaClass.findById(req.body.classId);
     const updateSubjectById=await schemaSubject.findByIdAndUpdate(_id,req.body,{new:true});
-    if(!updateSubjectById){
-      return res.status(404).send()
+    console.log('aaaaaa',findClass);
+    if(!updateSubjectById || !findClass){
+      return res.status(404).send();
     }
     res.send(updateSubjectById);
   }catch(e){
