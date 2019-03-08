@@ -42,16 +42,14 @@ const Student=new Schema({
     },
     classId:  { type: Schema.Types.ObjectId, ref: 'schemaClass' }
 })
-console.log('outttttttt');
+
 Student.pre('save', async function (next){
-    console.log('innnnnnnnn');
     const updateStudent =this
-    console.log('updateeeee var',updateStudent);
-    console.log('issssss',updateStudent.isModified('password'))
-    if(updateStudent.isModified('password')){
-        console.log('modifiyyyy',isModified);
-        updateStudent.password=await bcrypt.hash(user.password,8)
+    if(updateStudent.isModified('password')) {
+        console.log('hello');
+        updateStudent.password=await bcrypt.hash(updateStudent.password,8)
     }
+
     next()
 })
 const schemaStudent=mongoose.model('STUDENT',Student);
