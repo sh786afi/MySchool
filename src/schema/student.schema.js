@@ -39,7 +39,7 @@ const Student=new Schema({
         default: 0,
         validate(value) {
             if (value < 0) {
-                throw new Error('Age must be a postive number')
+                throw new Error('Age must be a positive number')
             }
         }
     },
@@ -90,5 +90,6 @@ Student.pre('save', async function (next){
 
     next()
 })
-const schemaStudent=mongoose.model('STUDENT',Student);
-module.exports ={schemaStudent};
+// const schemaStudent=mongoose.model('STUDENT',Student);
+//module.exports ={schemaStudent};
+module.exports ={Student};

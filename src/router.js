@@ -9,29 +9,29 @@ export default function createRouter() {
 
     //Students
     router.post("/student/signup", addStudent);
-    router.post("/student/login",loginStudent)
-    router.get("/student/me", auth,studentProfile);
-    router.get("/student/:id", getStudentbyId);
-    router.delete("/student/:id", deleteStudentbyId);
-    router.patch("/student/update/:id", updateStudentbyId);
-    router.get("/student/class/:classId", getAllSubjectOfStudent);
-    router.post("/student/logout",auth,logoutStudent);
-    router.post("/student/logoutAll",auth, logoutAllStudent)
+    // router.post("/student/login",loginStudent)
+    // router.get("/student/me", auth,studentProfile);
+    // router.get("/student/:id", getStudentbyId);
+    // router.delete("/student/:id", deleteStudentbyId);
+    // router.patch("/student/update/:id", updateStudentbyId);
+    // router.get("/student/class/:classId", getAllSubjectOfStudent);
+    // router.post("/student/logout",auth,logoutStudent);
+    // router.post("/student/logoutAll",auth, logoutAllStudent)
 
-    //Class
-    router.post("/class", addClass);
-    router.get("/class", getClass);
-    router.get("/class/:id", getClassbyId);
-    router.delete("/class/:id", deleteClassbyId)
-    router.patch("/class/:id", updateClassbyId);
+    // //Class
+    // router.post("/class", addClass);
+    // router.get("/class", getClass);
+    // router.get("/class/:id", getClassbyId);
+    // router.delete("/class/:id", deleteClassbyId)
+    // router.patch("/class/:id", updateClassbyId);
 
-    //Subject
-    router.post("/subject", addSubject);
-    router.get("/subject", getSubject);
-    router.get("/subject/:id", getSubjectbyId);
-    router.delete("/subject/:id", deleteSubjectbyId);
-    router.patch("/subject/:id", updateSubjectbyId);
-    router.get("/subject/class/:classId", getAllSubjectInClass);
+    // //Subject
+    // router.post("/subject", addSubject);
+    // router.get("/subject", getSubject);
+    // router.get("/subject/:id", getSubjectbyId);
+    // router.delete("/subject/:id", deleteSubjectbyId);
+    // router.patch("/subject/:id", updateSubjectbyId);
+    // router.get("/subject/class/:classId", getAllSubjectInClass);
 
     
 
