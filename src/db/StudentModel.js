@@ -30,17 +30,18 @@ export  class StudentModel extends BaseModel {
             
            const createStudent =  await this.model
            .create(newStudent)
-           console.log(createStudent);
-           const findClass = await this.model.findById(req.body.classId);
-           if(!findClass){        
-             res.status(404).send({errorMessage: "class not found"})
-           }
+           console.log('createStudent',createStudent);
+           //const findClass = await this.model.findById(req.body.classId);
+          //  if(!findClass){        
+          //    res.status(404).send({errorMessage: "class not found"})
+          //  }
            await createStudent.save();
            const token = await createStudent.generateAuthToken();
-           res.status(200).send({createStudent,token});
-         }catch(e){
+           //res.status(200).send({createStudent,token});
+         }catch(error){
            //console.log(createStudent);
-           res.status(400).send(e)
+           //res.status(400).send(e)
+           throw error
          }
     }
       

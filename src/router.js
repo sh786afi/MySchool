@@ -19,7 +19,7 @@ export default function createRouter() {
     // router.post("/student/logoutAll",auth, logoutAllStudent)
 
     // //Class
-    // router.post("/class", addClass);
+    router.post("/class", addClass);
     // router.get("/class", getClass);
     // router.get("/class/:id", getClassbyId);
     // router.delete("/class/:id", deleteClassbyId)

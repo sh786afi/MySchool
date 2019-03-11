@@ -1,21 +1,21 @@
-// import {schemaClass} from "../schema/class.schema";
-// import {bodyParser} from "body-parser";
-// import { userInfo } from "os";
-// import {express} from "express";
+import { route, successRoute } from "./";
+import ClassModel from "../db/classModel";
 
-// //Add a new Class API
-// export const addClass = async (req, res) => {
-//   const createClass =  new schemaClass(req.body);
-//   // console.log('abcccc',req.body);
-//   try{
-//     console.log(createClass);
-//     await createClass.save();
-//     res.status(200).send({createClass});
-//   }catch(e){
-//     console.log(createClass);
-//     res.status(400).send(e)
-//   }
-//     };
+//Add a new Class API
+    export const addClass= route(
+        async (req,res)=>{
+          const {
+            ClassName,
+            CapacityOfStudent
+          } = req.body;
+          const newClass = await ClassModel.create(
+            ClassName,
+            CapacityOfStudent
+          );
+          console.log('newwww class',newClass)
+         res.send(await successRoute(newClass));
+        }
+      );
 // //Get all Class api
 // export const getClass = async(req,res)=>{
 //     try{
