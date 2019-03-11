@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import {schemaClass} from "./class.schema";
+import { error } from "util";
 const Schema = mongoose.Schema;
 const Student=new Schema({
     name: {
@@ -11,6 +13,7 @@ const Student=new Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: true,
         trim: true,
         lowercase: true,
@@ -40,13 +43,48 @@ const Student=new Schema({
             }
         }
     },
-    classId:  { type: Schema.Types.ObjectId, ref: 'schemaClass' }
+    classId:  { type: Schema.Types.ObjectId, ref: 'schemaClass' },
+    tokens: [{
+        token:{
+            type:String,
+            required:true
+        }
+    }]
 })
+
+Student.methods.toJSON = function () {
+    const user = this;
+    const studentUsers = this
+    const userObject=user.toObject();
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject ;
+}
+
+Student.methods.generateAuthToken=async function () {
+    const studentUsers = this
+    const token = jwt.sign({_id: studentUsers._id.toString() },'thisismycourse',{expiresIn: '7 days'})
+    studentUsers.tokens=studentUsers.tokens.concat({token})
+    await studentUsers.save()
+    return token;
+}
+
+Student.statics.findByCredential=async (email,password)=>{
+    const studentUsers =await schemaStudent.findOne({email});
+    if(!studentUsers){
+        throw new Error('Unable to Login');
+    }
+    const isMatch = await bcrypt.compare(password,studentUsers.password);
+    if(!isMatch){
+        throw new Error('Unable to Login');
+    }
+    return studentUsers
+}
 
 Student.pre('save', async function (next){
     const updateStudent =this
     if(updateStudent.isModified('password')) {
-        console.log('hello');
         updateStudent.password=await bcrypt.hash(updateStudent.password,8)
     }
 

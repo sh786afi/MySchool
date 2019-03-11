@@ -1,8 +1,12 @@
 import {schemaStudent} from "../schema/student.schema";
 import {schemaClass} from "../schema/class.schema";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import {auth} from "../lib/auth"
 var ObjectId=mongoose.Types.ObjectId;
-export const addStudent=async(req,res)=>{
+
+//Signup Student
+export const addStudent=async (req,res)=>{
     const _id = req.params.id;
     const createStudent =  new schemaStudent(req.body);
     try{
@@ -12,21 +16,26 @@ export const addStudent=async(req,res)=>{
         res.status(404).send({errorMessage: "class not found"})
       }
       await createStudent.save();
-      res.status(200).send({createStudent});
+      const token = await createStudent.generateAuthToken()
+      res.status(200).send({createStudent,token});
     }catch(e){
       //console.log(createStudent);
       res.status(400).send(e)
     }
 };
-//Get all Subject api
-export const getStudent = async(req,res)=>{
-    try{
-      const allStudents=await schemaStudent.find({});
-      res.send(allStudents);
-    }catch(e){
-      //console.log(allStudents);
-      res.status(500).send(e);
-    }
+//Login Student
+export const loginStudent = async (req,res)=>{
+  try{
+    const studentUser = await schemaStudent.findByCredential(req.body.email, req.body.password);
+    const token = await studentUser.generateAuthToken()
+    res.send({ studentUser,token });
+  }catch(e){
+    res.status(400).send();
+  }
+}
+//Get Student profile
+export const studentProfile = async(req,res)=>{
+      res.send(req.user);
 }; 
 //Get Subject By id
   export const getStudentbyId = async(req,res)=>{
@@ -84,7 +93,6 @@ export const getAllSubjectOfStudent = async(req,res)=>{
     try{
       const classId=req.params.classId;
        const StudentByClassId=await schemaStudent.find({'classId':classId});
-      console.log('subbiddddd',StudentByClassId);
       if(!StudentByClassId){
         return res.status(400).send()
       }
@@ -96,3 +104,26 @@ export const getAllSubjectOfStudent = async(req,res)=>{
       res.status(500).send(e);
     }
  }; 
+
+ export const logoutStudent = async (req, res)=>{
+   try{
+    req.user.tokens=req.user.tokens.filter((token)=>{
+
+      return token.token != req.token;
+    })
+    await req.user.save()
+    res.send()
+   }catch(e){
+    res.status(500).send()
+   }
+ };
+
+ export const logoutAllStudent = async (req,res)=>{
+   try{
+    req.user.tokens=[];
+    await req.user.save();
+    res.send()
+   }catch(e){
+    res.status(500).send()
+   }
+ };
