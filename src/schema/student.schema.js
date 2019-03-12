@@ -54,7 +54,6 @@ const Student=new Schema({
 
 Student.methods.toJSON = function () {
     const user = this;
-    const studentUsers = this
     const userObject=user.toObject();
     delete userObject.password;
     delete userObject.tokens;
@@ -62,34 +61,8 @@ Student.methods.toJSON = function () {
     return userObject ;
 }
 
-Student.methods.generateAuthToken=async function () {
-    const studentUsers = this
-    const token = jwt.sign({_id: studentUsers._id.toString() },'thisismycourse',{expiresIn: '7 days'})
-    studentUsers.tokens=studentUsers.tokens.concat({token})
-    await studentUsers.save()
-    return token;
-}
 
-Student.statics.findByCredential=async (email,password)=>{
-    const studentUsers =await schemaStudent.findOne({email});
-    if(!studentUsers){
-        throw new Error('Unable to Login');
-    }
-    const isMatch = await bcrypt.compare(password,studentUsers.password);
-    if(!isMatch){
-        throw new Error('Unable to Login');
-    }
-    return studentUsers
-}
 
-Student.pre('save', async function (next){
-    const updateStudent =this
-    if(updateStudent.isModified('password')) {
-        updateStudent.password=await bcrypt.hash(updateStudent.password,8)
-    }
-
-    next()
-})
 // const schemaStudent=mongoose.model('STUDENT',Student);
 //module.exports ={schemaStudent};
 export default  Student;

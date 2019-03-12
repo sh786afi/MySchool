@@ -1,4 +1,5 @@
 import { route, successRoute } from "./";
+import {comparePassword} from "../lib/crypto"
 // import {schemaStudent} from "../schema/student.schema";
 // import {schemaClass} from "../schema/class.schema";
 import StudentModel from "../db/StudentModel";
@@ -23,26 +24,33 @@ export const addStudent= route(
       age,
       classId
     );
-    
+    console.log('newStudenttttt',newStudent)
+    if(!newStudent.findClass){
+      res.status(404).send({error:'class not found'})
+    }
     res.send(await successRoute(newStudent));
   }
 );
 
-//Login Student
-// export const loginStudent = async (req,res)=>{
-//   try{
-//     const studentUser = await schemaStudent.findByCredential(req.body.email, req.body.password);
-//     const token = await studentUser.generateAuthToken()
-//     res.send({ studentUser,token });
-//   }catch(e){
-//     res.status(400).send();
-//   }
-// }
-// //Get Student profile
-// export const studentProfile = async(req,res)=>{
-//       res.send(req.user);
-// }; 
-// //Get Subject By id
+// Login Student
+export const loginStudent = route(async (req,res)=>{
+  try{
+    const studentUser = await StudentModel.findByCredential(req.body.email, req.body.password);
+    console.log('studdeLogg',studentUser)
+    const isMatch = await comparePassword(req.body.password,studentUser.studentUser.password);
+    if(!isMatch){
+      res.status(404).send({error:'Incorrect password'})
+      }
+  res.send(await successRoute(studentUser));
+  }catch(e){
+    res.status(400).send({error:'email or password is incorrect'});
+  }
+});
+//Get Student profile
+export const studentProfile = route(async(req,res)=>{
+  res.send(await successRoute(req.user));
+}); 
+//Get Subject By id
 //   export const getStudentbyId = async(req,res)=>{
 //     const _id = req.params.id;
 //     try{

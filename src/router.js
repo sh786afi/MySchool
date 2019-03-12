@@ -9,8 +9,8 @@ export default function createRouter() {
 
     //Students
     router.post("/student/signup", addStudent);
-    // router.post("/student/login",loginStudent)
-    // router.get("/student/me", auth,studentProfile);
+    router.post("/student/login",loginStudent)
+    router.get("/student/me", auth,studentProfile);
     // router.get("/student/:id", getStudentbyId);
     // router.delete("/student/:id", deleteStudentbyId);
     // router.patch("/student/update/:id", updateStudentbyId);
