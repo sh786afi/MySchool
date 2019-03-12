@@ -23,7 +23,8 @@ export const addStudent= route(
       age,
       classId
     );
-   res.send(await successRoute(newStudent));
+    
+    res.send(await successRoute(newStudent));
   }
 );
 

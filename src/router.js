@@ -20,10 +20,10 @@ export default function createRouter() {
 
     // //Class
     router.post("/class", addClass);
-    // router.get("/class", getClass);
-    // router.get("/class/:id", getClassbyId);
-    // router.delete("/class/:id", deleteClassbyId)
-    // router.patch("/class/:id", updateClassbyId);
+    router.get("/class", getClass);
+    router.get("/class/:id", getClassbyId);
+    router.delete("/class/:id", deleteClassbyId)
+    router.patch("/class/:id", updateClassbyId);
 
     // //Subject
     // router.post("/subject", addSubject);

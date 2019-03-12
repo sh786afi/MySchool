@@ -92,4 +92,4 @@ Student.pre('save', async function (next){
 })
 // const schemaStudent=mongoose.model('STUDENT',Student);
 //module.exports ={schemaStudent};
-module.exports ={Student};
+export default  Student;
