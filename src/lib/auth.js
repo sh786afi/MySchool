@@ -1,12 +1,15 @@
 import jwt from "jsonwebtoken";
 import {schemaStudent} from "../schema/student.schema";
 import {configurationFile} from "./config"
+import StudentModel from "../db/StudentModel";
 
-const auth = async (req, res, next)=>{
+export const auth = async (req, res)=>{
     try{
         const token = req.header('Authorization').replace('Bearer ','')
         const decoded=jwt.verify(token, configurationFile.development.JWT_SECRET) 
-        const user=await schemaStudent.findOne({_id:decoded._id,'tokens.token':token})
+        
+        const user=StudentModel.findToken(decoded, token) 
+        //console.log('decoded',user)   
         if(!user){
             throw new error
         }
@@ -17,4 +20,3 @@ const auth = async (req, res, next)=>{
         res.status(401).send({error: 'Please Authenticate'});
     }
 }
-module.exports= {auth};

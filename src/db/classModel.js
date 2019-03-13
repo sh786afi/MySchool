@@ -20,14 +20,10 @@ export  class ClassModel extends BaseModel {
                 ClassName,
                 CapacityOfStudent
             };
-            console.log('modelll',this.model)
-            console.log('new Classs', newClass)
             const createClass =  await this.model.create(newClass)
-            console.log('createClasssssssss',createClass);
             const result=await createClass.save(); 
             return result;
         }catch(error){
-            console.log(createClass);
             //res.status(400).send(e)
             throw error
         }

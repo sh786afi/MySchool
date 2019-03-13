@@ -34,20 +34,17 @@ export  class StudentModel extends BaseModel {
                 age,
                 classId 
             };
-            
-           const createStudent =  await this.model.create(newStudent)
-           console.log('createStudent',createStudent);
-           const findClass = await this.ClassModel.findById(classId);
-        //    if(!findClass){        
-        //      res.status(404).send({errorMessage: "class not found"})
-        //    }
+            const findClass = await this.ClassModel.findById(classId);
+           if(!findClass){        
+             return 0;
+           }
+           const createStudent =  await this.model.create(newStudent) 
            const result=await createStudent.save();
            const token = await createStudent.generateAuthToken();
-           const finalResult={result,token,findClass}
+           const finalResult={result,token}
            return finalResult
            //res.status(200).send({createStudent,token});
          }catch(error){
-           //console.log(createStudent);
            //res.status(400).send(e)
            throw error
          }
@@ -58,8 +55,12 @@ export  class StudentModel extends BaseModel {
         
         
         const result={studentUser,token}
-        console.log('studenttt',result)
         return result
+    }
+    findToken=(decoded,token)=>{
+      const decodeToken= this.model.findOne({_id:decoded._id,'tokens.token':token})
+      console.log(decoded,'aaaaaaaaaaaa',token,'bbbb',decoded._id);
+      return decodeToken;
     }
       
 }

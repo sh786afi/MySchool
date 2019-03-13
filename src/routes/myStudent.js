@@ -24,8 +24,8 @@ export const addStudent= route(
       age,
       classId
     );
-    console.log('newStudenttttt',newStudent)
-    if(!newStudent.findClass){
+    //console.log('newStudenttttt',newStudent)
+    if(newStudent == 0){
       res.status(404).send({error:'class not found'})
     }
     res.send(await successRoute(newStudent));
@@ -36,7 +36,7 @@ export const addStudent= route(
 export const loginStudent = route(async (req,res)=>{
   try{
     const studentUser = await StudentModel.findByCredential(req.body.email, req.body.password);
-    console.log('studdeLogg',studentUser)
+    //console.log('studdeLogg',studentUser)
     const isMatch = await comparePassword(req.body.password,studentUser.studentUser.password);
     if(!isMatch){
       res.status(404).send({error:'Incorrect password'})
@@ -47,9 +47,10 @@ export const loginStudent = route(async (req,res)=>{
   }
 });
 //Get Student profile
-export const studentProfile = route(async(req,res)=>{
+export const studentProfile = async(req,res)=>{
+  console.log('studenttt',studentProfile)
   res.send(await successRoute(req.user));
-}); 
+}; 
 //Get Subject By id
 //   export const getStudentbyId = async(req,res)=>{
 //     const _id = req.params.id;
