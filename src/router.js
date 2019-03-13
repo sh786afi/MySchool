@@ -3,9 +3,13 @@ import bodyParser from "body-parser";
 import {addClass,getClass,getClassbyId,deleteClassbyId,updateClassbyId} from "./routes/myClass";
 import {addSubject,getSubject,getSubjectbyId,deleteSubjectbyId,updateSubjectbyId,getAllSubjectInClass} from "./routes/mySubject";
 import {addStudent,loginStudent,studentProfile,getStudentbyId,deleteStudentbyId,updateStudentbyId,getAllSubjectOfStudent,logoutStudent,logoutAllStudent} from "./routes/myStudent"
+import {addStaff} from "./routes/myStaff"
 import {auth} from "./lib/auth"
 export default function createRouter() {
     const router =  express.Router();
+
+    //Staff Api
+    router.post("/staff/signup",addStaff)
 
     //Students
     router.post("/student/signup", addStudent);
