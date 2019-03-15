@@ -49,10 +49,6 @@ export function successRoute(data) {
     };
   }
   return {
-    data: data,
-    error: {
-      errorMessage: "Success",
-      errorCode: 200
-    }
+    data: data
   };
 }

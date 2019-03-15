@@ -5,7 +5,7 @@ import {comparePassword} from "../lib/crypto"
 import StudentModel from "../db/StudentModel";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import {auth} from "../lib/auth"
+
 
 //Signup Student
 export const addStudent= route(
@@ -17,6 +17,8 @@ export const addStudent= route(
       age,
       classId
     } = req.body;
+
+   
     const newStudent = await StudentModel.create(
       name,
       email,
@@ -24,7 +26,7 @@ export const addStudent= route(
       age,
       classId
     );
-    //console.log('newStudenttttt',newStudent)
+    console.log('newStudenttttt',StudentModel)
     if(newStudent == 0){
       res.status(404).send({error:'class not found'})
     }
