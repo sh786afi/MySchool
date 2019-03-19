@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watch",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "npm run build && nodemon dist/src/index.js"
+    "start": "npm run build && nodemon dist/src/index.js",
+    "dev": "nodemon --exec babel-node src/index.js && npm start"
   },
   "jest": {
     "testEnvironment": "node"
@@ -48,6 +49,7 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
+    "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "@babel/preset-env": "^7.3.4",
