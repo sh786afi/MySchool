@@ -58,5 +58,9 @@ export class StudentClassModel extends BaseModel {
       throw error;
     }
   };
+  getStudentByClass = async classId => {
+    const getStudents = await this.studentMapModel.find({ classId });
+    return getStudents;
+  };
 }
 export default new StudentClassModel();

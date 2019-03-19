@@ -49,10 +49,10 @@ export class StaffModel extends BaseModel {
     const result = { staffUser, token };
     return result;
   };
-  getStaffById=async(id)=>{
+  getStaffById = async id => {
     const staffUser = await this.staffModel.findById(id);
     return staffUser;
-  }
+  };
 }
 
 export default new StaffModel();

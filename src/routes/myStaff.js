@@ -1,4 +1,5 @@
 import { comparePassword } from "../lib/crypto";
+import { logoutGenerateToken } from "../lib/token";
 import { route, successRoute } from "./";
 import _ from "lodash";
 import StaffModel from "../db/staffModel";
@@ -34,17 +35,8 @@ export const loginStaff = route(async (req, res) => {
   res.send(await successRoute(staffUser));
 });
 //staff Profile
-export const staffProfile = route(async(req,res)=>{
+export const staffProfile = route(async (req, res) => {
   //const staffProfileData=req.user;
- // staffProfileData.password=undefined;
+  // staffProfileData.password=undefined;
   res.send(await successRoute(req.user));
-}); 
-export const logoutStaff = route(async (req,res)=>{
-  try{
-    id=req.user.data._id;
-    console.log('idd',id)
-   res.send(await successRoute());
-  }catch(e){
-   res.status(500).send()
-  }
 });

@@ -20,8 +20,7 @@ export const verifyToken = async (req, res, next) => {
     const decoded = await decodeToken(authHeader);
     const user = await StaffModel.getStaffById(decoded.id);
     req.user = user;
-    console.log('reqqqqq',req.user);
-    
+
     if (!user) {
       throw new ApplicationError("Not found");
     }

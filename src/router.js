@@ -25,17 +25,21 @@ import {
   logoutStudent,
   logoutAllStudent
 } from "./routes/myStudent";
-import {addClassStudent} from "./routes/StudentClassMap"
-import { addStaff, loginStaff, staffProfile, logoutStaff } from "./routes/myStaff";
-import { verifyToken } from "./lib/session"
+import { addClassStudent, getStudentInClass } from "./routes/StudentClassMap";
+import {
+  addStaff,
+  loginStaff,
+  staffProfile,
+  logoutStaff
+} from "./routes/myStaff";
+import { verifyToken } from "./lib/session";
 export default function createRouter() {
   const router = express.Router();
 
   //Staff Api
   router.post("/staff/signup", addStaff);
   router.post("/staff/login", loginStaff);
-  //router.get("/staff/me", verifyToken, staffProfile);
-  router.post("/staff/logoutAll", verifyToken, logoutStaff)
+  router.get("/staff/me", verifyToken, staffProfile);
 
   //AddClass
   router.post("/class", verifyToken, addClass);
@@ -55,9 +59,8 @@ export default function createRouter() {
 
   //StudentClassMap
 
-  router.post("/student/map",addClassStudent);
-
-
+  router.post("/student/map", addClassStudent);
+  router.get("/student/class/:classId", getStudentInClass);
 
   // //Subject
   router.post("/subject/add", verifyToken, addSubject);
