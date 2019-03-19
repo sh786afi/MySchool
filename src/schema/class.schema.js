@@ -13,6 +13,6 @@ const Class =new mongoose.Schema({
         
     }
 })
-const schemaClass=mongoose.model('ClassRoom',Class);
+//const schemaClass=mongoose.model('ClassRoom',Class);
 
-module.exports = {schemaClass};
+export default Class;

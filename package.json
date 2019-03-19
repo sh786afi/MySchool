@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watch",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "npm run build && nodemon dist/src/index.js"
+    "start": "npm run build && nodemon dist/src/index.js",
+    "dev": "nodemon --exec babel-node src/index.js && npm start"
   },
   "jest": {
     "testEnvironment": "node"
@@ -21,6 +22,9 @@
           }
         }
       ]
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
     ]
   },
   "engines": {
@@ -31,6 +35,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.4",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.0",
@@ -44,6 +49,9 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
     "babel-jest": "^24.1.0",

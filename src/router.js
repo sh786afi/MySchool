@@ -1,42 +1,74 @@
 import express from "express";
 import bodyParser from "body-parser";
-import {addClass,getClass,getClassbyId,deleteClassbyId,updateClassbyId} from "./routes/myClass";
-import {addSubject,getSubject,getSubjectbyId,deleteSubjectbyId,updateSubjectbyId,getAllSubjectInClass} from "./routes/mySubject";
-import {addStudent,loginStudent,studentProfile,getStudentbyId,deleteStudentbyId,updateStudentbyId,getAllSubjectOfStudent,logoutStudent,logoutAllStudent} from "./routes/myStudent"
-import {auth} from "./lib/auth"
+import {
+  addClass,
+  getClass,
+  getClassbyId,
+  deleteClassbyId,
+  updateClassbyId
+} from "./routes/myClass";
+import {
+  addSubject,
+  getSubject,
+  getSubjectbyId,
+  deleteSubjectbyId,
+  updateSubjectbyId,
+  getAllSubjectInClass
+} from "./routes/mySubject";
+import {
+  addStudent,
+  allStudent,
+  getStudentbyId,
+  deleteStudentbyId,
+  updateStudentbyId,
+  getAllSubjectOfStudent,
+  logoutStudent,
+  logoutAllStudent
+} from "./routes/myStudent";
+import { addClassStudent, getStudentInClass } from "./routes/StudentClassMap";
+import {
+  addStaff,
+  loginStaff,
+  staffProfile,
+  logoutStaff
+} from "./routes/myStaff";
+import { verifyToken } from "./lib/session";
 export default function createRouter() {
-    const router =  express.Router();
+  const router = express.Router();
 
-    //Students
-    router.post("/student/signup", addStudent);
-    router.post("/student/login",loginStudent)
-    router.get("/student/me", auth,studentProfile);
-    router.get("/student/:id", getStudentbyId);
-    router.delete("/student/:id", deleteStudentbyId);
-    router.patch("/student/update/:id", updateStudentbyId);
-    router.get("/student/class/:classId", getAllSubjectOfStudent);
-    router.post("/student/logout",auth,logoutStudent);
-    router.post("/student/logoutAll",auth, logoutAllStudent)
+  //Staff Api
+  router.post("/staff/signup", addStaff);
+  router.post("/staff/login", loginStaff);
+  router.get("/staff/me", verifyToken, staffProfile);
 
-    //Class
-    router.post("/class", addClass);
-    router.get("/class", getClass);
-    router.get("/class/:id", getClassbyId);
-    router.delete("/class/:id", deleteClassbyId)
-    router.patch("/class/:id", updateClassbyId);
+  //AddClass
+  router.post("/class", verifyToken, addClass);
+  router.get("/class", verifyToken, getClass);
+  router.get("/class/:id", verifyToken, getClassbyId);
+  router.delete("/class/:id", verifyToken, deleteClassbyId);
+  router.patch("/class/:id", verifyToken, updateClassbyId);
 
-    //Subject
-    router.post("/subject", addSubject);
-    router.get("/subject", getSubject);
-    router.get("/subject/:id", getSubjectbyId);
-    router.delete("/subject/:id", deleteSubjectbyId);
-    router.patch("/subject/:id", updateSubjectbyId);
-    router.get("/subject/class/:classId", getAllSubjectInClass);
+  //Students
+  router.post("/student/add", verifyToken, addStudent);
+  router.get("/student", verifyToken, allStudent);
+  router.get("/student/:id", verifyToken, getStudentbyId);
+  router.delete("/student/:id", deleteStudentbyId);
+  router.patch("/student/update/:id", verifyToken, updateStudentbyId);
+  // router.get("/student/class/:classId", getAllSubjectOfStudent);
+  // router.post("/student/logout",auth,logoutStudent);
 
-    
+  //StudentClassMap
 
-    return router;
-    
+  router.post("/student/map", addClassStudent);
+  router.get("/student/class/:classId", getStudentInClass);
+
+  // //Subject
+  router.post("/subject/add", verifyToken, addSubject);
+  router.get("/subject", verifyToken, getSubject);
+  router.get("/subject/:id", verifyToken, getSubjectbyId);
+  router.delete("/subject/:id", verifyToken, deleteSubjectbyId);
+  router.patch("/subject/:id", updateSubjectbyId);
+  router.get("/subject/class/:classId", verifyToken, getAllSubjectInClass);
+
+  return router;
 }
-
-

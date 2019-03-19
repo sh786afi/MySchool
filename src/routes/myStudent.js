@@ -1,129 +1,71 @@
-import {schemaStudent} from "../schema/student.schema";
-import {schemaClass} from "../schema/class.schema";
-import mongoose from "mongoose";
+import { route, successRoute } from "./";
+import { comparePassword } from "../lib/crypto"
+import StudentModel from "../db/StudentModel";
 import jwt from "jsonwebtoken";
-import {auth} from "../lib/auth"
-var ObjectId=mongoose.Types.ObjectId;
+
 
 //Signup Student
-export const addStudent=async (req,res)=>{
-    const _id = req.params.id;
-    const createStudent =  new schemaStudent(req.body);
-    try{
-      console.log(createStudent);
-      const findClass = await schemaClass.findById(req.body.classId);
-      if(!findClass){        
-        res.status(404).send({errorMessage: "class not found"})
-      }
-      await createStudent.save();
-      const token = await createStudent.generateAuthToken()
-      res.status(200).send({createStudent,token});
-    }catch(e){
-      //console.log(createStudent);
-      res.status(400).send(e)
-    }
-};
-//Login Student
-export const loginStudent = async (req,res)=>{
-  try{
-    const studentUser = await schemaStudent.findByCredential(req.body.email, req.body.password);
-    const token = await studentUser.generateAuthToken()
-    res.send({ studentUser,token });
-  }catch(e){
-    res.status(400).send();
+export const addStudent = route(
+  async (req, res) => {
+    const {
+      name,
+      fatherName,
+      email,
+      age
+    } = req.body;
+    const newStudent = await StudentModel.createStudent(
+      name,
+      fatherName,
+      email,
+      age
+    );
+    res.send(await successRoute(newStudent));
   }
-}
-//Get Student profile
-export const studentProfile = async(req,res)=>{
-      res.send(req.user);
-}; 
-//Get Subject By id
-  export const getStudentbyId = async(req,res)=>{
-    const _id = req.params.id;
-    try{
-      const StudentById=await schemaStudent.findById(_id);
-      if(!StudentById){
-        return res.status(400).send()
-      }
-      res.send(StudentById);
-    }catch(e){
-      //console.log(modelClass);
-      res.status(500).send(e);
-    }
- }; 
- export const deleteStudentbyId = async(req,res)=>{
+);
+//find All Student
+export const allStudent=route(async(req,res)=>{
+  const totalStudentDetails=await StudentModel.findAllStudent();
+  res.send(await successRoute(totalStudentDetails));
+});
+// Get Student By id
+ export const getStudentbyId =route (async(req,res)=>{
   const _id = req.params.id;
   try{
-    const deleteStudentById=await schemaStudent.findByIdAndRemove(_id);
-    if(!deleteStudentById){
-      return res.status(400).send()
+    const studentById=await StudentModel.findStudentById(_id);
+  if(!studentById){
+      return res.status(400).send({error:'Student does not exist'}) 
+  }
+  res.send(await successRoute(studentById));
+}catch(e){
+  res.status(500).send(e);
+}
+});   
+export const deleteStudentbyId = route(async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const deleteStudent = await StudentModel.deleteStudentById(_id);
+    if (!deleteStudent) {
+      return res.status(400).send({ error: 'Student does not exist' })
     }
-    res.send(deleteStudentById);
-  }catch(e){
-    //console.log(deleteStudentById);
+    res.send(await successRoute(deleteStudent));
+  } catch (e) {
     res.status(500).send(e);
   }
-}; 
-export const updateStudentbyId = async(req,res)=>{
-  const update=Object.keys(req.body);
-  const allowedUpdates=['name','email','password','age','classId']
-  const isValidOperation=update.entries((update)=>allowedUpdates.includes(update))
-  if(!isValidOperation){
-    return res.status.send({error:'Invalid Updates'})
-  }
-  try{
-    //const updateStudent=await schemaStudent.findByIdAndUpdate(_id,req.body,{new:true, runValidators: true});
-    const updateStudent =await schemaStudent.findById(req.params.id);
-    update.forEach((update) =>updateStudent[update]=req.body[update]);
-    const findClass = await schemaClass.findById(req.body.classId);
-    if(!updateStudent){
-      return res.status(404).send()
+});
+export const updateStudentbyId = route(async (req, res) => {
+  const _id = req.params.id;
+  const info = req.body;
+  try {
+    const updateStudentById = await StudentModel.updateStudent(_id, info);
+    if (!updateStudentById) {
+      return res.status(404).send({ error: 'Student does not exist' })
     }
-    else if(!findClass){
-      return res.status(404).send({errorMessage: "class not found"})
-    }
-    await updateStudent.save();
-    res.send(updateStudent);
-  }catch(e){
+    res.send(await successRoute(updateStudentById));
+  } catch (e) {
     res.status(400).send(e);
   }
-}; 
-//pending
-export const getAllSubjectOfStudent = async(req,res)=>{
-    try{
-      const classId=req.params.classId;
-       const StudentByClassId=await schemaStudent.find({'classId':classId});
-      if(!StudentByClassId){
-        return res.status(400).send()
-      }
-      res.send(StudentByClassId);
-    }catch(e){
-      console.log(e);
-      
-      //console.log(modelClass);
-      res.status(500).send(e);
-    }
- }; 
+}); 
+ 
 
- export const logoutStudent = async (req, res)=>{
-   try{
-    req.user.tokens=req.user.tokens.filter((token)=>{
 
-      return token.token != req.token;
-    })
-    await req.user.save()
-    res.send()
-   }catch(e){
-    res.status(500).send()
-   }
- };
 
- export const logoutAllStudent = async (req,res)=>{
-   try{
-    req.user.tokens=[];
-    await req.user.save();
-    res.send()
-   }catch(e){
-    res.status(500).send()
-   }
- };

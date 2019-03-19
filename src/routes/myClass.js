@@ -1,67 +1,65 @@
-import {schemaClass} from "../schema/class.schema";
-import {bodyParser} from "body-parser";
-import { userInfo } from "os";
-import {express} from "express";
-import {mongoose} from "../db/mongoose"
+import { route, successRoute } from "./";
+import ClassModel from "../db/classModel";
+
 //Add a new Class API
-export const addClass = async (req, res) => {
-  const createClass =  new schemaClass(req.body);
-  // console.log('abcccc',req.body);
-  try{
-    console.log(createClass);
-    await createClass.save();
-    res.status(200).send({createClass});
-  }catch(e){
-    console.log(createClass);
-    res.status(400).send(e)
+export const addClass = route(
+  async (req, res) => {
+    const {
+      ClassName,
+      CapacityOfStudent
+    } = req.body;
+    const newClass = await ClassModel.create(
+      ClassName,
+      CapacityOfStudent
+    );
+    console.log('newwww class', newClass)
+    res.send(await successRoute(newClass));
   }
-    };
+);
 //Get all Class api
-export const getClass = async(req,res)=>{
-    try{
-      const allClasses=await schemaClass.find({});
-      res.send(allClasses);
-    }catch(e){
-      //console.log(schemaClass);
-      res.status(500).send(e);
-    }
-}; 
-  export const getClassbyId = async(req,res)=>{
-    const _id = req.params.id;
-    try{
-      const classById=await schemaClass.findById(_id);
-      if(!classById){
-        return res.status(400).send()
-      }
-      res.send(classById);
-    }catch(e){
-      //console.log(schemaClass);
-      res.status(500).send(e);
-    }
- }; 
- export const deleteClassbyId = async(req,res)=>{
+export const getClass = route(async (req, res) => {
+  const getAllClass = await ClassModel.getClass();
+  res.send(await successRoute(getAllClass));
+
+}
+);
+export const getClassbyId = route(async (req, res) => {
   const _id = req.params.id;
-  try{
-    const deleteClassById=await schemaClass.findByIdAndRemove(_id);
-    if(!deleteClassById){
-      return res.status(400).send() 
+  try {
+    const classById = await ClassModel.findClassById(_id);
+    if (!classById) {
+      return res.status(400).send({ error: 'Class does not exist' })
     }
-    res.send(deleteClassById);
-  }catch(e){
+    res.send(await successRoute(classById));
+  } catch (e) {
+    res.status(500).send(e);
+  }
+}
+);
+export const deleteClassbyId = route(async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const deleteClass = await ClassModel.deleteClassById(_id);
+    if (!deleteClass) {
+      return res.status(400).send({ error: 'Class does not exist' })
+    }
+    res.send(await successRoute(deleteClass));
+  } catch (e) {
     //console.log(schemaClass);
     res.status(500).send(e);
   }
-}; 
-export const updateClassbyId = async(req,res)=>{
+});
+export const updateClassbyId = route(async (req, res) => {
   const _id = req.params.id;
-  try{
-    const updateClassById=await schemaClass.findByIdAndUpdate(_id,req.body,{new:true});
-    if(!updateClassById){
-      return res.status(404).send()
+  const info = req.body;
+  try {
+    const updateClassById = await ClassModel.updateClass(_id, info);
+    if (!updateClassById) {
+      return res.status(404).send({ error: 'Class does not exist' })
     }
-    res.send(updateClassById);
-  }catch(e){
+    res.send(await successRoute(updateClassById));
+  } catch (e) {
     //console.log(schemaClass);
     res.status(400).send(e);
   }
-}; 
+}); 
