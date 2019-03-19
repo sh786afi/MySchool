@@ -39,10 +39,8 @@ export  class ClassModel extends BaseModel {
           }
     }
     findClassById=async (id)=>{
-      
             const classById=await this.model.findById(id)         
             return classById;
-            //res.send(classById);
     }
     deleteClassById=async (id)=>{
       

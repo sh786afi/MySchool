@@ -25,7 +25,7 @@ export class StaffModel extends BaseModel {
       if (findEmail == 0) {
         const createStaff = await this.staffModel.create(newStaff);
         const staffResult = await createStaff.save();
-        const token = await generateToken();
+        const token = await generateToken(staffResult._id);
         return { staffResult, token };
       } else {
         throw new ApplicationError(
@@ -45,10 +45,14 @@ export class StaffModel extends BaseModel {
         401
       );
     }
-    const token = await generateToken();
+    const token = await generateToken(staffUser._id);
     const result = { staffUser, token };
     return result;
   };
+  getStaffById=async(id)=>{
+    const staffUser = await this.staffModel.findById(id);
+    return staffUser;
+  }
 }
 
 export default new StaffModel();

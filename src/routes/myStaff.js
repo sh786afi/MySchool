@@ -33,3 +33,18 @@ export const loginStaff = route(async (req, res) => {
   staffUser.staffUser.password = undefined;
   res.send(await successRoute(staffUser));
 });
+//staff Profile
+export const staffProfile = route(async(req,res)=>{
+  //const staffProfileData=req.user;
+ // staffProfileData.password=undefined;
+  res.send(await successRoute(req.user));
+}); 
+export const logoutStaff = route(async (req,res)=>{
+  try{
+    id=req.user.data._id;
+    console.log('idd',id)
+   res.send(await successRoute());
+  }catch(e){
+   res.status(500).send()
+  }
+});

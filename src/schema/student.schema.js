@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import {schemaClass} from "./class.schema";
-import { error } from "util";
 const Schema = mongoose.Schema;
 const Student=new Schema({
     name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    fatherName: {
         type: String,
         required: true,
         trim: true
@@ -23,17 +24,6 @@ const Student=new Schema({
             }
         }
     },
-    password: {
-        type: String,
-        required: true,
-        minlength: 7,
-        trim: true,
-        validate(value) {
-            if (value.toLowerCase().includes('password')) {
-                throw new Error('Password cannot contain "password"')
-            }
-        }
-    },
     age: {
         type: Number,
         default: 0,
@@ -42,14 +32,7 @@ const Student=new Schema({
                 throw new Error('Age must be a positive number')
             }
         }
-    },
-    classId:  { type: Schema.Types.ObjectId, ref: 'schemaClass' },
-    tokens: [{
-        token:{
-            type:String,
-            required:true
-        }
-    }]
+    }
 })
 
 Student.methods.toJSON = function () {

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {schemaClass} from "./class.schema";
+
 const Schema = mongoose.Schema;
 const Subject=new Schema({
     SubjectName: {
@@ -8,7 +8,6 @@ const Subject=new Schema({
         minlength: 1,
         trim: true
     },
-    classId:  { type: mongoose.Types.ObjectId, ref: 'schemaClass' }
+    classId:  { type: mongoose.Types.ObjectId}
 })
-const schemaSubject=mongoose.model('SUBJECT',Subject);
-module.exports ={schemaSubject};
+export default Subject;
