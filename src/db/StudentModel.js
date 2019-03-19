@@ -6,9 +6,9 @@ import ClassModel from "./classModel"
 
 export class StudentModel extends BaseModel {
   constructor(connection) {
-    super("STUDENT", connection);
+    super("STUDENTINFO", connection);
     this.schema = Student;
-    this.name = "STUDENT";
+    this.name = "STUDENTINFO";
     this.model = this.connection.model(this.name, this.schema);
     this.ClassSchema = Class;
     this.ClassName = "CLASSROOM"
