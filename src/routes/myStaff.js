@@ -5,6 +5,8 @@ import _ from "lodash";
 import StaffModel from "../db/staffModel";
 export const addStaff = route(
   async (req, res) => {
+    //console.log(req.body);
+
     const { StaffName, Designation, email, password } = req.body;
     const result = await StaffModel.staffSignUp(
       StaffName,
@@ -12,6 +14,7 @@ export const addStaff = route(
       email,
       password
     );
+    //console.log(result);
     res.send(await successRoute(result));
   },
   {

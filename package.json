@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "NODE_ENV=test jest --watch --testPathIgnorePatterns=dist/tests",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "npm run build && nodemon dist/src/index.js",
-    "dev": "nodemon --exec babel-node src/index.js && npm start"
+    "start": "npm run build &&  nodemon dist/src/index.js",
+    "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js && npm start"
   },
   "jest": {
     "testEnvironment": "node"
